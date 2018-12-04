@@ -19,9 +19,26 @@ try {
 	alert(e);
 }
 
+
+function user() {                                                               //用户头像
+	this.defaultAnchor=BMAP_ANCHOR_TOP_RIGHT;            
+	this.defaultOffset=new BMap.Size(10, 10);
+}
+user.prototype=new BMap.Control();
+user.prototype.initialize=function(map){
+	var div=document.createElement("div");                             
+	div.innerHTML='<a href="user.html" target="_blank"><img src="images/user1.png" width="60" height="60"'+
+				  'style="margin-right:10px; margin-top:10px;"></a>';
+
+	map.getContainer().appendChild(div);                               
+	return div;                                                        
+}
+var user_=new user();                                      
+map.addControl(user_); 
+
 //右下角，设置缩放按钮
 var bottom_right_navigation=new BMap.NavigationControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT,   
-							type: BMAP_NAVIGATION_CONTROL_ZOOM});             
+							type: BMAP_NAVIGATION_CONTROL_SMALL});             
 map.addControl(bottom_right_navigation);
 
 // var geolocationControl=new BMap.GeolocationControl();                         //添加定位控件
@@ -39,7 +56,7 @@ map.addControl(bottom_right_navigation);
 // map.addControl(geolocationControl);
 
 //左上角“重庆大学虎溪校区”控件
-function ZoomControl(){                                  //定义一个控件类,即function
+function ZoomControl() {                                 //定义一个控件类,即function
 	this.defaultAnchor=BMAP_ANCHOR_TOP_LEFT;             //默认停靠位置和偏移量
 	this.defaultOffset=new BMap.Size(10, 10);
 }
@@ -47,14 +64,14 @@ ZoomControl.prototype=new BMap.Control();                //通过JavaScript的pr
 //自定义控件必须实现自己的initialize方法,并且将控件的DOM元素返回
 //在本方法中创建一个div元素作为控件的容器,并将其添加到地图容器中
 ZoomControl.prototype.initialize=function(map){
-	var div=document.createElement("div");                             //创建一个DOM元素
+	var div=document.createElement("h2");                             //创建一个DOM元素
 	div.appendChild(document.createTextNode("重庆大学虎溪校区"));       //添加文字说明
 	div.style.cursor="pointer";                                        //设置样式
 	div.style.margin="15px";
-	div.style.color="blue";
+	div.style.color="#1E88E5";
 
 	div.onclick=function(e){                                           //绑定事件,点击后放大为17级
-		map.centerAndZoom(new BMap.Point(106.305972,29.59973), 17);
+		map.centerAndZoom(new BMap.Point(106.305972,29.59953), 17);
 	}
 	map.getContainer().appendChild(div);                               //添加DOM元素到地图中
 	return div;                                                        //将DOM元素返回
@@ -63,14 +80,30 @@ var myZoomCtrl=new ZoomControl();                                      //创建�
 map.addControl(myZoomCtrl);                                            //添加到地图当中
 
 //校徽图案
-var myIcon=new BMap.Icon("images/CQU.png", new BMap.Size(100, 100));
-var cqu=new BMap.Marker(new BMap.Point(106.30536,29.599001), {icon:myIcon});     
+var myIcon=new BMap.Icon("images/CQU.png", new BMap.Size(55, 55));
+var cqu=new BMap.Marker(new BMap.Point(106.30536,29.599341), {icon:myIcon});     
 // cqu.addEventListener("click", getAttr);                                         
 // function getAttr() {
 // 	var p=cqu.getPosition();                                                      
 // 	alert("CQU的位置是"+p.lng+","+p.lat);   
 // }                       
 map.addOverlay(cqu);
+
+function fangyuan() {                                                               //方圆图标
+	this.defaultAnchor=BMAP_ANCHOR_TOP_LEFT;            
+	this.defaultOffset=new BMap.Size(30, 660);
+}
+fangyuan.prototype=new BMap.Control();
+fangyuan.prototype.initialize=function(map){
+	var div=document.createElement("div");                             
+	div.innerHTML='<img src="images/FangYuan.png" width="80" height="30"'+
+				  'style="margin-right:10px; margin-top:10px;">';
+
+	map.getContainer().appendChild(div);                               
+	return div;                                                        
+}
+var fangyuan_=new fangyuan();                                      
+map.addControl(fangyuan_); 
   
 
 //一教
@@ -109,20 +142,20 @@ var yiJiao=new BMap.Polygon([                                        //一教地
 		   new BMap.Point(106.307701,29.601102),
 		   new BMap.Point(106.307701,29.601211),
 		   new BMap.Point(106.308545,29.601251),
-		   new BMap.Point(106.308514,29.601439),
+		   new BMap.Point(106.308514,29.601439),		   
 		   new BMap.Point(106.308186,29.601431),
 		   new BMap.Point(106.3081,29.601533),
 		   new BMap.Point(106.30735,29.60173),
 		   ], {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.7});   
 map.addOverlay(yiJiao);    
 
-var yiJiaoInfo="<div>"+"<h3>第一教学楼</h3>"+                        //一教信息窗口
+var yiJiaoInfo="<div>"+'<h3>第一教学楼</h3>'+                          //一教信息窗口
 			   '<img id="yiJiao" src="images/maps/yiJiao.png" width="390" height="240" title="第一教学楼"'+
-			   'style="float:left; margin:10px 0 10px 8px">'+
-			   '<button type="button" class="btn btn-primary" style="margin:2px">教室分布图</button>'+
-			   '<button type="button" class="btn btn-success" style="margin:2px">查看空教室</button>'+
-			   '<button type="button" class="btn btn-warning" style="margin:2px">发布活动</button>'+
-			   '<button type="button" class="btn btn-warning" style="margin:2px">查看活动</button>'+
+			   'style="float:left; margin:10px 0 10px 8px;">'+
+			   '<a href="map_pages/yiJiaomap.html" target="_blank"><button type="button" class="btn btn-primary">教室分布图</button></a>'+
+			   '<button type="button" class="btn btn-success" style="margin:2px" onclick="kongJiaoShi()">查看空教室</button>'+
+			   '<button type="button" class="btn btn-warning" style="margin:2px" onclick="faBuHuoDong()">发布活动</button>'+
+			   '<a href="actvt_pages/yiJiaoact.html" target="_blank"><button type="button" class="btn btn-warning" style="margin:2px">查看活动</button></a>'+
 			   "</div>";
 var yiJiaoWin=new BMap.InfoWindow(yiJiaoInfo);
 yiJiao.addEventListener("click", function(){      
@@ -131,6 +164,58 @@ yiJiao.addEventListener("click", function(){
 	   yiJiaoWin.redraw();   
 	}
 });
+
+function kongJiaoShi() {                                              //空教室信息
+	map.closeInfoWindow(yiJiaoWin);
+	var opts={
+	  width: 300,     
+	  height: 200,     
+	  title: "当前空教室：", 
+	  enableMessage:true
+	}
+	var kongJiaoShiWin=new BMap.InfoWindow("空教室号", opts); 
+	map.openInfoWindow(kongJiaoShiWin, new BMap.Point(106.308626,29.601371));
+}
+
+function faBuHuoDong() {                                              //发布活动
+	map.closeInfoWindow(yiJiaoWin);
+	var huoDongInfo='<form>'+
+  				  '<div class="form-group">'+
+    				'<label for="formGroupExampleInput">活动名称</label>'+
+    				'<input type="text" class="form-control" id="formGroupExampleInput" placeholder="活动名称">'+
+  				  '</div>'+
+  				  '<div class="form-group">'+
+   					'<label for="formGroupExampleInput2">活动主题</label>'+
+    				'<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="活动主题">'+
+				  '</div>'+
+				  '<div class="form-row">'+
+				    '<div class="col">'+
+				      '<label for="formGroupExampleInput">活动时间</label>'+
+				      '<input type="text" class="form-control" placeholder="活动时间">'+
+				    '</div>'+
+				    '<div class="col">'+
+				      '<label for="formGroupExampleInput">活动地点</label>'+
+				      '<input type="text" class="form-control" placeholder="活动地点">'+
+				    '</div>'+
+				  '</div>'+
+				  '<div class="custom-file" style="margin-top:20px">'+
+					  '<input type="file" class="custom-file-input" id="customFile">'+
+					  '<label class="custom-file-label" for="customFile">上传活动海报、展板等</label>'+
+				  '</div>'+
+				  '<div class="form-group" style="margin-top:15px">'+
+				    '<label for="exampleFormControlTextarea1">活动简介</label>'+
+				    '<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>'+
+				  '</div>'+
+				  '<button type="submit" class="btn btn-primary" style="width:220px; margin-left:10px">提交</button>'+
+				  '<button type="reset" class="btn btn-secondary" style="width:220px; margin-left:40px">重置</button>'+
+				'</form>';
+	var opts={
+	  width: 500,
+	  enableMessage:true
+	}
+	var huoDongWin=new BMap.InfoWindow(huoDongInfo, opts);
+	map.openInfoWindow(huoDongWin, new BMap.Point(106.308626,29.601371));
+}
 
 
 var zongHeLou=new BMap.Polygon([                                      //综合楼地图

@@ -5,3 +5,7 @@ body, html, #allmap {
 	margin:0;
 	font-family:"微软雅黑";
 }
+
+.anchorBL{
+    display:none;
+}
